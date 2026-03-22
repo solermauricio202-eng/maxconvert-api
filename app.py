@@ -14,7 +14,7 @@ import datetime
 
 # Configuración de la aplicación Flask
 app = Flask(__name__, static_folder='.', static_url_path='')
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # Configuración para monetización
 app.config['MONETIZATION_ENABLED'] = True  # Cambiar a False para desactivar
