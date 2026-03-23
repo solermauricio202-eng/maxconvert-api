@@ -189,7 +189,7 @@ def convert_video():
         output_path = os.path.join(TEMP_FOLDER, output_filename)
 
         # Configuración FFmpeg para video (sin cambios)
-        cmd = ['ffmpeg', '-y', '-threads', '1', '-t', '300', '-i', upload_path]
+        cmd = ['ffmpeg', '-y', '-threads', '4', '-t', '300', '-i', upload_path]
         
         if format == 'mp4':
             cmd.extend(['-c:v', 'libx264', '-crf', '28', '-preset', 'ultrafast'])
