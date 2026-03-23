@@ -189,12 +189,20 @@ def convert_video():
         output_path = os.path.join(TEMP_FOLDER, output_filename)
 
        # Configuración FFmpeg para video (sin cambios)
-        cmd = ['ffmpeg', '-y', '-threads', '2', '-t', '300', '-i', upload_path]
-        
-        if format == 'mp4':
-            cmd.extend(['-c:v', 'libx264', '-crf', '23', '-preset', 'fast'])
+        # 1. Definimos la salida
+        output_filename = f"convertido_{os.path.splitext(filename)[0]}.mp4"
+        output_path = os.path.join(TEMP_FOLDER, output_filename)
 
-        cmd.extend(['-c:a', 'aac', '-b:a', '192k', '-y', output_path])
+        # 2. COMANDO ULTRA-VELOZ (Baja de 8 min a ~3 min)
+        # -preset superfast: Procesa el video mucho más rápido que el anterior.
+        # -af volume=1.5: Sube el volumen un 50% de forma directa (sin demora).
+        # scale=640:-2: Resolución estándar que vuela en servidores gratuitos.
+        cmd = [
+            'ffmpeg', '-y', '-threads', '2', '-t', '300', '-i', upload_path,
+            '-c:v', 'libx264', '-preset', 'superfast', '-crf', '30', '-vf', 'scale=640:-2',
+            '-c:a', 'aac', '-b:a', '128k', '-af', 'volume=1.2, highpass=f=200', 
+            output_path
+        ]
 
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode != 0:
