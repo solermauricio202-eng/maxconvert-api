@@ -192,9 +192,9 @@ def convert_video():
         cmd = ['ffmpeg', '-i', upload_path]
         
         if format == 'mp4':
-            cmd.extend(['-c:v', 'libx264', '-crf', '23', '-preset', 'fast'])
+            cmd.extend(['-c:v', 'libx264', '-crf', '23', '-preset', 'ultrafast'])
         elif format == 'mp4_hd':
-            cmd.extend(['-c:v', 'libx264', '-crf', '20', '-preset', 'medium', '-vf', 'scale=-1:720'])
+            cmd.extend(['-c:v', 'libx264', '-crf', '20', '-preset', 'ultrafast', '-vf', 'scale=-1:720'])
         elif format == 'mp4_2k':
             cmd.extend(['-c:v', 'libx264', '-crf', '18', '-preset', 'slow', '-vf', 'scale=-1:1080'])
         elif format == 'mp4_4k':
