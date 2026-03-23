@@ -190,23 +190,10 @@ def convert_video():
 
         # Configuración FFmpeg para video (sin cambios)
         # Configuración de Velocidad Extrema para Plan Gratuito
-        cmd = ['ffmpeg', '-y', '-threads', '1', '-t', '300', '-i', upload_path]
-
-        # Solo permitimos MP4 Estándar (480p) para que el servidor no explote
-        if format == 'mp4':
-            cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-vf', 'scale=-1:480'])
-        elif format == 'mp4_hd':
-            cmd.extend(['-c:v', 'libx264', '-crf', '35', '-preset', 'ultrafast', '-vf', 'scale=-1:720'])
-        elif format == 'mp4_2k':
-            cmd.extend(['-c:v', 'libx264', '-crf', '38', '-preset', 'ultrafast', '-vf', 'scale=-1:1080'])
-        elif format == 'mp4_4k':
-            cmd.extend(['-c:v', 'libx264', '-crf', '40', '-preset', 'ultrafast', '-vf', 'scale=-1:2160'])
-        elif format == 'prores':
-            cmd.extend(['-c:v', 'prores_ks', '-profile:v', '3', '-vendor', 'apl0'])
-        elif format == 'webm':
-            cmd.extend(['-c:v', 'libvpx-vp9', '-crf', '35', '-b:v', '0', '-deadline', 'realtime'])
-        
-        cmd.extend(['-c:a', 'aac', '-b:a', '128k', output_path])
+        cmd = [
+            'ffmpeg', '-y', '-threads', '1', '-t', '300', '-i', upload_path,
+            '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-vf', 'scale=-1:480',
+            '-c:a', 'aac', '-b:a', '128k', output_path
 
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode != 0:
