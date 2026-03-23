@@ -188,12 +188,13 @@ def convert_video():
         output_filename = f"converted_{os.path.splitext(filename)[0]}.{format.split('_')[0]}"
         output_path = os.path.join(TEMP_FOLDER, output_filename)
 
-        # Configuración FFmpeg para video (sin cambios)
-        # Configuración de Velocidad Extrema para Plan Gratuito
-        cmd = [
-            'ffmpeg', '-y', '-threads', '1', '-t', '300', '-i', upload_path,
-            '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-vf', 'scale=-1:480',
-            '-c:a', 'aac', '-b:a', '128k', output_path
+       # Configuración FFmpeg para video (sin cambios)
+        cmd = ['ffmpeg', '-y', '-threads', '2', '-t', '300', '-i', upload_path]
+        
+        if format == 'mp4':
+            cmd.extend(['-c:v', 'libx264', '-crf', '23', '-preset', 'fast'])
+
+        cmd.extend(['-c:a', 'aac', '-b:a', '192k', '-y', output_path])
 
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode != 0:
