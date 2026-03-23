@@ -193,8 +193,7 @@ def convert_video():
         
         if format == 'mp4':
             cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-vf', 'scale=-1:480'])
-        else 
-            cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-vf', 'scale=-1:480'])
+        else cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-vf', 'scale=-1:480'])
         elif format == 'mp4_hd':
             cmd.extend(['-c:v', 'libx264', '-crf', '35', '-preset', 'ultrafast', '-vf', 'scale=-1:720'])
         elif format == 'mp4_2k':
