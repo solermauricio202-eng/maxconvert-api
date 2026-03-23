@@ -189,10 +189,12 @@ def convert_video():
         output_path = os.path.join(TEMP_FOLDER, output_filename)
 
         # Configuración FFmpeg para video (sin cambios)
-        cmd = ['ffmpeg', '-y', '-threads', '2', '-t', '300', '-i', upload_path]
+        cmd = ['ffmpeg', '-y', '-threads', '1', '-t', '300', '-i', upload_path]
         
         if format == 'mp4':
-            cmd.extend(['-c:v', 'libx264', '-crf', '32', '-preset', 'ultrafast'])
+            cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-vf', 'scale=-1:480'])
+        else:
+            cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-vf', 'scale=-1:480'])
         elif format == 'mp4_hd':
             cmd.extend(['-c:v', 'libx264', '-crf', '35', '-preset', 'ultrafast', '-vf', 'scale=-1:720'])
         elif format == 'mp4_2k':
@@ -204,7 +206,7 @@ def convert_video():
         elif format == 'webm':
             cmd.extend(['-c:v', 'libvpx-vp9', '-crf', '35', '-b:v', '0', '-deadline', 'realtime'])
         
-        cmd.extend(['-c:a', 'aac', '-b:a', '96k', output_path])
+        cmd.extend(['-c:a', 'aac', '-b:a', '128k', output_path])
 
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode != 0:
