@@ -19,4 +19,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 6. Comando para arrancar con Gunicorn (más rápido para la nube)
-CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--timeout", "900", "--workers", "1", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--timeout", "600", "--workers", "1", "app:app"]
