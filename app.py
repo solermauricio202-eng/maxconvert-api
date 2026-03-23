@@ -195,9 +195,6 @@ def convert_video():
         # Solo permitimos MP4 Estándar (480p) para que el servidor no explote
         if format == 'mp4':
             cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-vf', 'scale=-1:480'])
-        else:
-            # Si el usuario intenta usar otro, lo forzamos a 480p por seguridad
-            cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-vf', 'scale=-1:480'])
         elif format == 'mp4_hd':
             cmd.extend(['-c:v', 'libx264', '-crf', '35', '-preset', 'ultrafast', '-vf', 'scale=-1:720'])
         elif format == 'mp4_2k':
