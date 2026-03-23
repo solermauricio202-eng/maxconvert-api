@@ -14,7 +14,7 @@ RUN mkdir -p uploads temp
 # 4. Copiamos los archivos de requerimientos e instalamos librerías
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-
+ 
 # 5. Copiamos todo el código de la app
 COPY . .
 
