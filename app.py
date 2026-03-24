@@ -197,19 +197,24 @@ def convert_video():
         output_filename = f"reels_{os.path.splitext(filename)[0]}.mp4"
         output_path = os.path.join(TEMP_FOLDER, output_filename)
 
-        # Comando base con LÍMITE DE 60 SEGUNDOS para Redes Sociales
-        cmd = ['ffmpeg', '-y', '-threads', '2', '-t', '60', '-i', upload_path]
+        # 1. Definimos el nombre de salida (Siempre .mp4 para redes sociales)
+        output_filename = f"social_{os.path.splitext(filename)[0]}.mp4"
+        output_path = os.path.join(TEMP_FOLDER, output_filename)
 
-        # Lógica de Formatos (HD vs Estándar)
+        # 2. Comando BASE con LÍMITE DE 60 SEGUNDOS (Evita que Render se cuelgue)
+        # -t 60 asegura que el proceso termine rápido y no dé el error de conexión.
+        cmd = ['ffmpeg', '-y', '-threads', '1', '-t', '60', '-i', upload_path]
+
+        # 3. Lógica de Calidad (HD vs Estándar)
         if format == 'mp4_hd':
-            # HD 720p: Se ve increíble en Instagram/TikTok
-            cmd.extend(['-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-vf', 'scale=-1:720'])
+            # Configuración HD 720p optimizada para servidores gratuitos
+            cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '26', '-vf', 'scale=-1:720'])
         else:
-            # Estándar 480p: El más rápido de todos
-            cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-vf', 'scale=-1:480'])
+            # Configuración Estándar 480p (Máxima velocidad)
+            cmd.extend(['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '30', '-vf', 'scale=-1:480'])
 
-        # Audio de alta calidad para Reels
-        cmd.extend(['-c:a', 'aac', '-b:a', '192k', output_path])
+        # 4. Audio nítido y cierre del comando
+        cmd.extend(['-c:a', 'aac', '-b:a', '128k', output_path])
 
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode != 0:
